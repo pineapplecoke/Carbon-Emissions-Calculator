@@ -1,0 +1,236 @@
+.wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  min-width: 20px;
+  min-height: 30px;
+  font-family: "Nunito", sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 500;
+  color: #313133;
+  background: #4fd1c5;
+  background: linear-gradient(
+    90deg,
+    rgba(129, 230, 217, 1) 0%,
+    rgba(79, 209, 197, 1) 100%
+  );
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+}
+
+button::before {
+  content: "";
+  border-radius: 100px;
+  min-width: calc(50px + 12px);
+  min-height: calc(15px + 12px);
+  border: 10px solid #00ffcb;
+  box-shadow: 0 0 5px rgba(0, 255, 203, 0.64);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.button:hover,
+.button:focus {
+  color: #a52a2a;
+  transform: translateY(-3px);
+}
+
+button:hover::before,
+button:focus::before {
+  opacity: 1;
+}
+
+button::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 3px solid #00ffcb;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 3s infinite;
+}
+
+button:hover::after,
+button:focus::after {
+  animation: none;
+  display: none;
+}
+
+@keyframes ring {
+  0% {
+    width: 5px;
+    height: 5px;
+    opacity: 1;
+  }
+  100% {
+    width: 70px;
+    height: 70px;
+    opacity: 0;
+  }
+}
+
+/*button2*/
+
+.button2 {
+  min-width: 20px;
+  min-height: 30px;
+  font-family: "Nunito", sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 500;
+  color: #00bfff;
+  background: #00bfff;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 2, 0, 1) 0%,
+    rgba(79, 209, 197, 1) 100%
+  );
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+}
+
+button2::before {
+  content: "";
+  border-radius: 100px;
+  min-width: calc(50px + 12px);
+  min-height: calc(15px + 12px);
+  border: 10px solid #00ffcb;
+  box-shadow: 0 0 5px rgba(0, 255, 203, 0.64);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.button2:hover,
+.button2:focus {
+  color: #a52a2a;
+  transform: translateY(-3px);
+}
+
+button2:hover::before,
+button2:focus::before {
+  opacity: 1;
+}
+
+button2::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 3px solid #00bfff;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 3s infinite;
+}
+
+button2:hover::after,
+button2:focus::after {
+  animation: none;
+  display: none;
+}
+
+/*button3*/
+
+.button3 {
+  min-width: 20px;
+  min-height: 30px;
+  font-family: "Nunito", sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 500;
+  color: #8b0000;
+  background: #8b0000;
+  background: linear-gradient(
+    90deg,
+    rgba(214, 41, 41, 1) 0%,
+    rgba(79, 209, 197, 1) 100%
+  );
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+}
+
+button3::before {
+  content: "";
+  border-radius: 100px;
+  min-width: calc(50px + 12px);
+  min-height: calc(15px + 12px);
+  border: 10px solid #8b0000;
+  box-shadow: 0 0 5px rgba(0, 255, 203, 0.64);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.button3:hover,
+.button3:focus {
+  color: #a52a2a;
+  transform: translateY(-3px);
+}
+
+button3:hover::before,
+button3:focus::before {
+  opacity: 1;
+}
+
+button3::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 3px solid #8b0000;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 3s infinite;
+}
+
+button3:hover::after,
+button3:focus::after {
+  animation: none;
+  display: none;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" src="./Carbon-Emissions-Calculator/style/style.css">
+<style>
+        * {
+   margin: 0;
+   padding: 0;
+ }
+ #container {
+   position: relative;
+   height: 100vh;
+   overflow: hidden;
+ }
+
+    </style>
+    </head>
+    <header><h1>IoT Sensor Data</h1></header>
+<main>
+    
+    <div id="container"></div>
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js" integrity="sha256-7rldQObjnoCubPizkatB4UZ0sCQzu2ePgyGSUcVN70E=" crossorigin="anonymous"></script>
+
+<script>
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    var option;
+
+    var data = [];
+    var now = +new Date();
+    var oneDay = 1000;
+    var value = 0;
+    for (var i = 0; i < 60; i++) {
+        data.push(randomData(value));
+    }
+
+    option = {
+  xAxis:{
+                    type: "time",
+                    splitLine: {
+                        show: false,
+                    },
+                },
+  yAxis:  {
+                    type: "value",
+                    boundaryGap: [0, "100%"],
+                    splitLine: {
+                        show: false,
+                    },
+                },
+  series: [
+    {
+      data: [150, 230, 224, 218, 135, 147, 260],
+      type: 'line'
+    }
+  ]
+};
+
+    function freshdata() {
+        for (var i = 0; i < 1; i++) {
+            data.shift();
+            data.push(randomData(value));
+        }
+
+        myChart.setOption({
+            series: [{
+                data: data,
+            }, ],
+        });
+    }
+
+    function randomData(value) {
+        now = new Date(+now + oneDay);
+        value1 = value;
+        return {
+            name: now.toString(),
+            value: [
+                [now.getFullYear(), now.getMonth() + 1, now.getDate()].join("/") +
+                " " + [now.getHours(), now.getMinutes(), now.getSeconds()].join(":"),
+                Math.round(value1 * 100) / 100,
+            ],
+        };
+    }
+
+    if (option && typeof option === "object") {
+        myChart.setOption(option);
+    }
+</script>
+
+<script>
+    var app = {
+        newdatas: [],
+    };
+
+    $(function() {
+        setInterval(function() {
+            loadsendordata()
+        }, 1000)
+
+        function loadsendordata() {
+            $.ajax({
+                url: "http://127.0.0.1:3010/api/temupdatesensordata",
+                type: "GET",
+                success: function(res) {
+                    value = res.data[0].humidity;
+                    freshdata();
+                }
+
+            });
+
+        }
+    });
+</script>
+
+</html>
