@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Embodied Carbon Emission Calculator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="/style/style.css">
+
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Embodied Carbon Emission Calculator</h1>
+  </div>
+
+  <div class="grid">
+
+    <div class="buildingmanager">
+      <h2>Building Manager</h2>
+      
+      <input type="checkbox" id="enable" style="width: auto" name="enable" onclick="EnableBuildingManager(event)"> <label for="enable" >Enable Editing</label> <br> <br>
+      <form onsubmit="submitForm(event)">
+        <label for="buildingname">Name</label> <br>
+        <input style="margin-top: 2px;" type="text" name="buildingname" id="buildingname" required>
+        <br><br>
+        <label for="address">Address</label> <br>
+        <input style="margin-top: 2px;" type="text" name="address" id="address" required> <br> <br>
+        <label for="thickness">Thickness of the Footing [m]</label> <br>
+        <input style="margin-top: 2px;" class="thickness" type="number" step="0.01" name="thickness" id="thickness"
+          required> <br> <br>
+
+        <label for="interior"> Area of interior Walls [m²]</label> <br>
+        <input style="margin-top: 2px;" type="number" step="0.01" name="interior" id="interior" required> <br> <br>
+
+        <label for="stairs"> Amount of Stairs [pcs]</label> <br>
+        <input style="margin-top: 2px;" type="number" step="1" name="stairs" id="stairs" required> <br> <br>
+
+        <label for="browse">Blueprint</label>
+        <input class="browsebutton" type="file" id="browsebutton" name="browsebutton" required accept=".png, .jpg, .jpeg"> <br> <br>
+
+        <table class="area-table" style="width: 100%">
+
+          <tr>
+            <th style="width: 33%">Element</th>
+            <th style="width: 33%">Add</th>
+            <th style="width: 33%">Area [m²]</th>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; justify-content: space-between">
+                Footing <a class="delete" id="delete-footing">
+                  <img class="trashcan"  src="/style/trashcan.svg" alt="delete icon" style="height: 1rem;">
+              </div>
+              </a>
+            </td>
+            <td><button type="button" id="button-footing" name="select-area" value="button-footing" style="width: 100%" >Add Area</button></td>
+            <td id="area-footing">0</td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; justify-content: space-between">
+                Exterior wall <a class="delete" id="delete-exterior">
+                  <img  src="/style/trashcan.svg" alt="delete icon" style="height: 1rem">
+                </a>
+              </div>
+            </td>
+            <td><button type="button" id="button-exterior" name="select-area" value="button-exterior" style="width: 100%">Add Area </button></td>
+            <td id="area-exterior">0</td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display: flex; justify-content: space-between">
+                  Roof <a class="delete" id="delete-roof" >
+                  <img class="trashcan" id="delete-roof" src="/style/trashcan.svg" alt="delete icon" style="height: 1rem">
+
+                </a>
+              </div>
+            </td>
+            <td><button type="button" id="button-roof" name="select-area" value="button-roof" style="width: 100%">Add Area </button></td>
+            <td id="area-roof">0</td>
+          </tr>
+          <tr>
+            <td>Slab (enter the number of slabs)</td>
+            <td> <input type="number" step="1" name="slab-amount" id="slab-amount" required></td>
+            <td id="area-slab">0</td>
+          </tr>
+          <tr>
+            <td>Window</td>
+            <td style="text-align: center">-</td>
+            <td id="area-window">0</td>
+          </tr>
+          <tr>
+            <td>Door</td>
+            <td style="text-align: center">-</td>
+            <td id="area-door">0</td>
+          </tr>
+
+        </table>
+
+        <input class="updatebutton" type="submit" value="Update" onclick="updateClicked()">
+        <p id="validmessage" style="color: red"></p>
+      </form>
+
+    </div>
+
+    <div>
+      <iframe id="iframe" src="/embedDemo/Cesium_Citygml/Demo.html" style="height:100%;width:100%;"></iframe>
+    </div>
+
+    <div class="buildinglist">
+      <h2>List of Buildings</h2>
+      <table style="width: 100%">
+        <tr>
+        <th style="width: 25%">Name</th>
+        <th style="width: 25%">Address</th>
+        <th style="width: 25%">IOT</th>
+        <th colspan="4" style="width: 25%">Action</th>
+      </tr>
+
+      <% if (buildings.length > 0) { %>
+        <% buildings.forEach(b => { %>
+          <tr>
+            <td><%= b.name %></td>
+            <td><%= b.address %></td>
+            <td><button id="sensor">IOT</button></td>
+            <td><img class="trashcan delete" id="delete-building" src="/style/trashcan.svg" alt="delete icon" style="height: 1rem" data-name="<%= b.name %>"></td>
+            <td><img class="edit delete" id="edit" src="/style/edit.svg" alt="edit icon" style="height: 1rem" data-name="<%= b.name %>"></td>
+            <td><img class="gwp delete" id="leaf" src="/style/leaf.svg" alt="gwp icon" style="height: 1rem" data-name="<%= b.name %>"></td>
+            <td><img class="image delete" id="image" src="/style/image.svg" alt="image icon" style="height: 1rem" data-name="<%= b.name %>"></td>
+          </tr>    
+        <% }) %>
+      <% } %>
+
+      </table>
+    </div>
+
+    <div class="elementtable">
+      <h2>Elements of the Building and Global Warming Potential (GWP)</h2>
+      <table>
+        <tr>
+          <th>Element</th>
+          <th>Material (Ökobaudat)</th>
+          <th>Amount</th>
+          <th>Unit</th>
+          <th>GWP [kg CO2-eq]</th>
+          <th>e [kg CO2-eq]</th>
+        </tr>
+        <tr>
+          <td>Footing</td>
+          <td>Ready-mix concrete C30/37; C30/37</td>
+          <td id="leaf-footing"></td>
+          <td>m³</td>
+          <td id="gwp-footing">303.40</td>
+          <td id="e-footing"></td>
+        </tr>
+        <tr>
+          <td>Slab</td>
+          <td>Precast concrete slab, wall, 40cm; 971 kg/m2</td>
+          <td id="leaf-slab"></td>
+          <td>m²</td>
+          <td id="gwp-slab">130</td>
+          <td id="e-slab"></td>
+        </tr>
+        <tr>
+          <td>Interior wall</td>
+          <td>Precast concrete slab, wall, 12cm; 291,3 kg/m2</td>
+          <td id="leaf-interior"></td>
+          <td>m²</td>
+          <td id="gwp-interior">41.51</td>
+          <td id="e-interior"></td>
+        </tr>
+        <tr>
+          <td>Exterior wall</td>
+          <td>Natural stone slab, flexible, facade (40 mm); 104 kg/m2</td>
+          <td id="leaf-exterior-stone"></td>
+          <td>m²</td>
+          <td id="gwp-exterior-stone">28.56</td>
+          <td id="e-exterior-stone"></td>
+        </tr>
+        <tr>
+          <td>Exterior wall</td>
+          <td>Precast concrete slab, wall, 40cm; 971 kg/m2</td>
+          <td id="leaf-exterior-concrete"></td>
+          <td>m²</td>
+          <td id="gwp-exterior-concrete">130</td>
+          <td id="e-exterior-concrete"></td>
+        </tr>
+        <tr>
+          <td>Stairs</td>
+          <td>Precast concrete part, stairs, (1,1 m wide, 9 steps each 16 cm); 1965 kg</td>
+          <td id="leaf-stairs"></td>
+          <td>pcs</td>
+          <td id="gwp-stairs">329.72</td>
+          <td id="e-stairs"></td>
+        </tr>
+        <tr>
+          <td>Roof</td>
+          <td>Roof tile; 1800 kg/m3</td>
+          <td id="leaf-roof-tile"></td>
+          <td>m²</td>
+          <td id="gwp-roof-tile">16.23</td>
+          <td id="e-roof-tile"></td>
+        </tr>
+        <tr>
+          <td>Roof</td>
+          <td>Underroof membrane PP (thickness 0.00015 m); 0.15 kg/m2</td>
+          <td id="leaf-roof-membrane"></td>
+          <td>m²</td>
+          <td id="gwp-roof-membrane">0.58</td>
+          <td id="e-roof-membrane"></td>
+        </tr>
+        <tr>
+          <td>Window</td>
+          <td>Window glass, single; 10 kg/m2</td>
+          <td id="leaf-window-glass"></td>
+          <td>m²</td>
+          <td id="gwp-window-glass">13.53</td>
+          <td id="e-window-glass"></td>
+        </tr>
+        <tr>
+          <td>Window</td>
+          <td>Window frame PVC-U; 2,8 kg/m</td>
+          <td id="leaf-window-frame"></td>
+          <td>m</td>
+          <td id="gwp-window-frame">8.95</td>
+          <td id="e-window-frame"></td>
+        </tr>
+        <tr>
+          <td>Door</td>
+          <td>Door - Theo Schröders Entwicklung & Beratung GmbH - Fire / smoke protection doors (turning sash)</td>
+          <td id="leaf-door"></td>
+          <td>m²</td>
+          <td id="gwp-door">1748.35</td>
+          <td id="e-door"></td>
+        </tr>
+      </table>
+      <br>
+      <p style="display: inline; font-weight: bold">Total Embodied Carbon Emissions: </p> <p id="total-e" style="display: inline; font-weight: bold">--</p>
+      <p style="display: inline; font-weight: bold"> kg CO2-eq</p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p style="padding: 0.7rem">Engineering Informatics II | 1. Excercise | Group 5</p>
+  </div>
+
+  <script src="/scripts/script.js"></script>
+  <script src="/scripts/datahandler.js"></script>
+  <script src="/scripts/lock.js"></script>
+</body>
+
+</html>
